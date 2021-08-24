@@ -18,16 +18,17 @@
 
 
 ## Overview
-This project is about locating the vehicle number plate and capturing the registration number from there using SSD model
-and OCR technology. 
+This project is about locating the vehicle number plate and capturing the registration number from there using 
+SSD object model and OCR technology. 
 
 ## Motivation
 This model has several use cases like
     - granting access to vehicles based on registration number
     - capturing parking violations
+    - maintaining a record of vehicles entering and leaving a parking lot
 
 ## Technical Aspect 
-This project uses SSD model for object detection 
+This project uses SSD object detection model. 
 
 ## API call (via postman)
 
@@ -37,7 +38,7 @@ This project uses SSD model for object detection
 
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
-| `image` | `string` | **Required** |
+| `image`   | `string` | base64 notation of image   |
 
 ## Deployment
 
@@ -61,7 +62,7 @@ install the requirements file
   pip install -r requirements.txt
 ```
 
-download the .pb file from below location and keep it in datasets/experiment_ssd/2018_07_25_14-00/exported_model
+download the .pb file from below location and keep it in *datasets/experiment_ssd/2018_07_25_14-00/exported_model*
 
 ```http
     https://drive.google.com/drive/folders/1ZNUoxpuvylhEOAflXE6c_0JmaEuTnACF?usp=sharing
@@ -81,18 +82,18 @@ to push work directory contents to your git repo
 ## Execution Preparation and Steps:
 
 1. Go to GCP platform
-    - Create a project like ANPR2 (for example)
-    - Go to Navigation Menu (left hand corner) >> API & Services > Dashboard >> 
+    - Create a project like ANPR (for example)
+    - Go to Navigation Menu (left hand corner) >> API & Services > Dashboard  
     - Enable API & Services
     - Go/Search for Cloud Vision API and Enable
     - Left side Credentials > Top Create Credentials > Generate API Key and copy this
-2. Open the project in pycharm - 
-    - Go to rest-server.py line 64 numberPlateVal = detect_license_plate(ik)
-    - Navigate to detect_license_plate.py line 5 , replace key= with the current key
+2. Open the project in pycharm  
+    - Go to *rest-server.py* line 64 numberPlateVal = detect_license_plate(ik)
+    - Navigate to *detect_license_plate.py* line 5 , replace key= with the current key
     - Start the service by Run rest-server.py from pycharm menu or python rest-server.py
-3. Go to https://base64.guru/converter/encode/image and convert selected image to base64 format. 
+3. Go to *https://base64.guru/converter/encode/image* and convert selected image to base64 format. 
 4. start Postman service
-    - POST with json format key "image" and value "base64 format of image" and hit http://127.0.0.1:5000/predict
+    - POST with json format key "image" and value "base64 format of image" and hit *http://127.0.0.1:5000/predict*
     - The output will be base64 string for the cropped portion of the image where the number plate is located 
       and the value of number plate like "numberPlateVal": "KA01MR8041". 
     - This dict – key and value will come after passing thru the OCR
@@ -106,26 +107,16 @@ to push work directory contents to your git repo
 <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="python" 
 width="40" height="40"/> </a>
 
-<a href="https://scikit-learn.org/" target="_blank"> 
-<img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg" alt="scikit_learn" 
-width="40" height="40"/> </a>
+<a href="https://keras.io/api/" target="_blank"> 
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Keras_logo.svg/1200px-Keras_logo.svg.png" 
+alt="keras" width="40" height="40"/> </a>
 
-<a href="https://aws.amazon.com/s3/" target="_blank"> 
-<img src="https://panoply.io/images/integration-logos/s3.svg" alt="amazon-s3" width="40" height="40"/> </a>
-
-<a href="https://www.mysql.com/" target="_blank"> 
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original-wordmark.svg" 
-alt="mysql" width="40" height="40"/> </a>
+<a href="https://www.tensorflow.org" target="_blank"> 
+<img src="https://www.vectorlogo.zone/logos/tensorflow/tensorflow-icon.svg" 
+alt="tensorflow" width="40" height="40"/> </a>
 
 <a href="https://flask.palletsprojects.com/" target="_blank"> 
 <img src="https://www.vectorlogo.zone/logos/pocoo_flask/pocoo_flask-icon.svg" alt="flask" width="40" height="40"/> </a>
-
-<a href="https://heroku.com" target="_blank"> 
-<img src="https://www.vectorlogo.zone/logos/heroku/heroku-icon.svg" alt="heroku" width="40" height="40"/> </a>
-
-<a href="https://dvc.org/" target="_blank"> 
-<img src="https://icons-for-free.com/iconfiles/png/512/vscode+icons+type+dvc-1324451283933302923.png" alt="dvc" 
-width="40" height="40"/> </a>
 
 </p>
 
