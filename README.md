@@ -38,7 +38,7 @@ This project uses SSD object detection model.
 
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
-| `image`   | `string` | base64 notation of image   |
+| `image`   | `string` | `base64 notation of image` |
 
 ## Deployment
 
@@ -89,8 +89,8 @@ to push work directory contents to your git repo
     - Left side Credentials > Top Create Credentials > Generate API Key and copy this
 2. Open the project in pycharm  
     - Go to *rest-server.py* line 64 numberPlateVal = detect_license_plate(ik)
-    - Navigate to *detect_license_plate.py* line 5 , replace key= with the current key
-    - Start the service by Run rest-server.py from pycharm menu or python rest-server.py
+    - Navigate to *detect_license_plate method*  in *getNumberPlateVals.py* line 5 url, replace key= with the current key
+    - Start the service by Run rest-server.py from pycharm menu or **python rest-server.py**
 3. Go to *https://base64.guru/converter/encode/image* and convert selected image to base64 format. 
 4. start Postman service
     - POST with json format key "image" and value "base64 format of image" and hit *http://127.0.0.1:5000/predict*
