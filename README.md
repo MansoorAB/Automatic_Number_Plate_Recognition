@@ -1,12 +1,11 @@
 
-# Machine Fault Recognition using Wafer 
+# Automatic Number Plate Recognition with SSD model 
 
 ## Table of Content
   * [Demo](#demo)
   * [Overview](#overview)
   * [Motivation](#motivation)
   * [Technical Aspect](#technical-aspect)
-  * [Web Request](#web-form-request)
   * [API Call](#api-call-via-postman)
   * [Deployment](#deployment)
   * [Execution](#execution-preparation-and-steps)
@@ -14,51 +13,31 @@
   * [Authors](#authors)
   
 ## Demo
-Link: [https://machine-fault-recog-mbaig.herokuapp.com/](https://machine-fault-recog-mbaig.herokuapp.com/)
 
-[![](http://img.youtube.com/vi/p_DSL-QIK64/0.jpg)](http://www.youtube.com/watch?v=p_DSL-QIK64 "Machine Fault Recognition")
+[![](http://img.youtube.com/vi/w3SvxvTu0a4/0.jpg)](http://www.youtube.com/watch?v=w3SvxvTu0a4 "Automatic Number Plate Recognition")
 
-[![](https://imgur.com/ZOAt16X.png)](https://machine-fault-recog-mbaig.herokuapp.com/)
 
 ## Overview
-This project is about predicting a production line machine fault status using Wafer data. 
-
-For this purpose, historical data is validated, segregated into clusters and then separate machine learning models are 
-built for each cluster. 
-
-During prediction, each wafer is classified into an appropriate cluster and using the model for that cluster, 
-its status is predicted.
+This project is about locating the vehicle number plate and capturing the registration number from there using SSD model
+and OCR technology. 
 
 ## Motivation
-Early prediction of faulty machines will help the factory personnel to carry out relevant maintenance tasks. 
-This will ensure uninterrupted production service line. 
-
-An interruption to production service line is causing a huge financial impact and loss of reputation to the client. 
+This model has several use cases like
+    - granting access to vehicles based on registration number
+    - capturing parking violations
 
 ## Technical Aspect 
-This project is divided into two parts:
-1. CICD pipeline using DVC, to create machine learning models based on training data.
-2. Prediction service built and hosted using Flask web app on Heroku
-
-## Web Form Request
-
-```http
-  https://machine-fault-recog-mbaig.herokuapp.com/
-```
-
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `folderPath` | `string` | **Required** |
+This project uses SSD model for object detection 
 
 ## API call (via postman)
 
 ```http
-  POST https://machine-fault-recog-mbaig.herokuapp.com/predict
+  POST http://127.0.0.1/predict
 ```
 
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
-| `folderPath` | `string` | **Required** |
+| `image` | `string` | **Required** |
 
 ## Deployment
 
@@ -82,10 +61,10 @@ install the requirements file
   pip install -r requirements.txt
 ```
 
-download the data from
+download the .pb file from below location and keep it in datasets/experiment_ssd/2018_07_25_14-00/exported_model
 
 ```http
-    https://drive.google.com/drive/folders/10dAftFpAvOTUgpAU2I-b9SFzaBmFwB70?usp=sharing
+    https://drive.google.com/drive/folders/1ZNUoxpuvylhEOAflXE6c_0JmaEuTnACF?usp=sharing
 ```
 
 create a working directory to hold this project and use the below git commands 
@@ -99,25 +78,26 @@ to push work directory contents to your git repo
     git push origin main
 ```
 
-build your own package commands
-
-```bash
-    python setup.py sdist bdist_wheel 
-```
-
 ## Execution Preparation and Steps:
-1. Data for training and prediction is coming from Amazon S3 bucket. Make your own S3 bucket and hold the data
-    - Training Data - bucket: wafer-data and folder/object: historical-data/
-    - Prediction Data - bucket: wafer-data and folder/object: current-data/
-2. All the training modules can be run with a single command $ **dvc repro**
-3. It will segregate train data into clusters and create custom model for each cluster. The models will sit in 
-   s3 bucket: wafer-models and reports would go to bucket: wafer-reports
-4. s3 buckets need to be created manually by user along with an s3 full access permissions. 
-   These keys need to be updated as follows:
-   - Windows - Update the file "C:\Users\UserName\.aws\credentials" 
-   - Heroku - $ heroku config:set AWS_ACCESS_KEY_ID=xxx AWS_SECRET_ACCESS_KEY=yyy AWS_DEFAULT_REGION=zzz -a <dyno-name>
-5. Prediction can be invoked from the url https://machine-fault-recog-mbaig.herokuapp.com/ or via postman service
-   as mentioned above
+
+1. Go to GCP platform
+    - Create a project like ANPR2 (for example)
+    - Go to Navigation Menu (left hand corner) >> API & Services > Dashboard >> 
+    - Enable API & Services
+    - Go/Search for Cloud Vision API and Enable
+    - Left side Credentials > Top Create Credentials > Generate API Key and copy this
+2. Open the project in pycharm - 
+    - Go to rest-server.py line 64 numberPlateVal = detect_license_plate(ik)
+    - Navigate to detect_license_plate.py line 5 , replace key= with the current key
+    - Start the service by Run rest-server.py from pycharm menu or python rest-server.py
+3. Go to https://base64.guru/converter/encode/image and convert selected image to base64 format. 
+4. start Postman service
+    - POST with json format key "image" and value "base64 format of image" and hit http://127.0.0.1:5000/predict
+    - The output will be base64 string for the cropped portion of the image where the number plate is located 
+      and the value of number plate like "numberPlateVal": "KA01MR8041". 
+    - This dict – key and value will come after passing thru the OCR
+5. In real time when getting data from camera, we do cv2.videocapture and cam.read to get continuous image from the camera. 
+
 
 ## Technology Used
 <p align="left">
