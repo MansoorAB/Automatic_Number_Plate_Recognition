@@ -93,7 +93,7 @@ to push work directory contents to your git repo
     - Start the service via **python rest-server.py**
 3. Go to *https://base64.guru/converter/encode/image* and convert selected image to base64 format. 
 4. start Postman service
-    - POST with json format key "image" and value "base64 format of image" and hit *http://127.0.0.1:5000/predict*
+    - POST with json format key "image" and value "base64 encoding of image" to URL *http://127.0.0.1:5000/predict*
     - The output will be base64 string for the cropped portion of the image where the number plate is located 
       and the value of number plate like "numberPlateVal": "KA01MR8041". 
     - This dict – key and value will come after passing thru the OCR
